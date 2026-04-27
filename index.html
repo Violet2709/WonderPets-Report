@@ -24,7 +24,6 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -35,7 +34,6 @@
       overflow-x: hidden;
     }
 
-    /* ── NOISE OVERLAY ── */
     body::before {
       content: '';
       position: fixed;
@@ -55,7 +53,7 @@
       height: 64px;
       display: flex;
       align-items: center;
-      background: rgba(11, 15, 26, 0.85);
+      background: rgba(11, 15, 26, 0.92);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
@@ -67,6 +65,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
     }
 
     .logo {
@@ -75,10 +74,12 @@
       font-size: 1rem;
       color: var(--white);
       letter-spacing: -0.03em;
+      z-index: 1001;
     }
 
     .logo span { color: var(--accent); }
 
+    /* Desktop nav links */
     .nav-links {
       list-style: none;
       display: flex;
@@ -100,6 +101,122 @@
     .nav-links a:hover {
       color: var(--white);
       background: var(--surface2);
+    }
+
+    /* ── HAMBURGER BUTTON ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1001;
+      flex-shrink: 0;
+      transition: border-color 0.2s;
+    }
+
+    .hamburger:hover { border-color: var(--accent); }
+
+    .hamburger span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--soft);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    /* Hamburger → X animation */
+    .hamburger.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+      background: var(--white);
+    }
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .hamburger.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+      background: var(--white);
+    }
+
+    /* ── MOBILE MENU OVERLAY ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: rgba(11, 15, 26, 0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 999;
+      padding: 1rem 1.5rem 1.5rem;
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .mobile-menu.open {
+      display: block;
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .mobile-menu ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .mobile-menu ul li a {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--soft);
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .mobile-menu ul li a:hover {
+      color: var(--white);
+      background: var(--surface2);
+      border-color: var(--border);
+    }
+
+    .mobile-menu ul li a .menu-icon {
+      font-size: 1rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .mobile-menu-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.75rem 0;
+    }
+
+    .mobile-menu-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 1rem;
+      margin-bottom: 0.5rem;
     }
 
     /* ── HERO ── */
@@ -166,18 +283,6 @@
       50% { opacity: 0.5; transform: scale(0.7); }
     }
 
-    .project-logo {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-      border-radius: 20px;
-      margin: 0 auto 1.5rem;
-      display: block;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      padding: 12px;
-    }
-
     .hero h1 {
       font-family: 'Syne', sans-serif;
       font-size: clamp(2.2rem, 5vw, 3.8rem);
@@ -222,9 +327,7 @@
     .tag-cyan { background: rgba(6,182,212,0.15); color: #67e8f9; border: 1px solid rgba(6,182,212,0.25); }
 
     /* ── SECTION BASE ── */
-    .section {
-      padding: 6rem 2rem;
-    }
+    .section { padding: 6rem 2rem; }
 
     .container {
       max-width: 1100px;
@@ -260,7 +363,6 @@
       width: 100%;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--border), transparent);
-      margin: 0;
     }
 
     /* ── MEMBERS ── */
@@ -298,8 +400,7 @@
     .member-card:hover::before { opacity: 1; }
 
     .member-card img {
-      width: 72px;
-      height: 72px;
+      width: 72px; height: 72px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--border);
@@ -307,19 +408,8 @@
       background: var(--surface2);
     }
 
-    .member-name {
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: var(--white);
-      margin-bottom: 0.2rem;
-    }
-
-    .member-role {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
+    .member-name { font-weight: 600; font-size: 0.85rem; color: var(--white); margin-bottom: 0.2rem; }
+    .member-role { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
 
     /* ── CARDS ── */
     .card {
@@ -340,12 +430,7 @@
       margin-bottom: 1rem;
     }
 
-    .card p, .card li {
-      font-size: 0.9rem;
-      color: var(--soft);
-      line-height: 1.7;
-    }
-
+    .card p, .card li { font-size: 0.9rem; color: var(--soft); line-height: 1.7; }
     .card ul { padding-left: 1.2rem; }
     .card li { margin-bottom: 0.4rem; }
 
@@ -409,7 +494,6 @@
 
     .instrument-link:hover { background: rgba(59,130,246,0.15); }
 
-    /* RESPONDENT TABLE */
     .respondent-table-wrap {
       overflow-x: auto;
       border-radius: 12px;
@@ -417,15 +501,8 @@
       margin-top: 1rem;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-    }
-
-    thead {
-      background: var(--surface2);
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    thead { background: var(--surface2); }
 
     th {
       padding: 0.85rem 1rem;
@@ -447,7 +524,6 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(59,130,246,0.04); }
 
-    /* GALLERY */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -470,12 +546,7 @@
       padding: 1rem;
     }
 
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ── RESULTS ── */
     #results { background: var(--surface); }
@@ -505,15 +576,8 @@
       background-clip: text;
     }
 
-    .stat-label {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-top: 0.25rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
+    .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
 
-    /* HEURISTIC FINDINGS */
     .finding-card {
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -547,31 +611,12 @@
     .sev-med  { background: rgba(245,158,11,0.15); color: #fcd34d; border: 1px solid rgba(245,158,11,0.25); }
     .sev-low  { background: rgba(16,185,129,0.15); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.25); }
 
-    .finding-title {
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--white);
-      flex: 1;
-    }
+    .finding-title { font-weight: 600; font-size: 0.9rem; color: var(--white); flex: 1; }
+    .finding-heuristic { font-size: 0.75rem; color: var(--accent); flex-shrink: 0; }
 
-    .finding-heuristic {
-      font-size: 0.75rem;
-      color: var(--accent);
-      flex-shrink: 0;
-    }
-
-    .finding-body {
-      padding: 0 1.25rem 1.25rem;
-      display: none;
-    }
-
+    .finding-body { padding: 0 1.25rem 1.25rem; display: none; }
     .finding-body.open { display: block; }
-
-    .finding-body p {
-      font-size: 0.85rem;
-      color: var(--soft);
-      margin-bottom: 0.75rem;
-    }
+    .finding-body p { font-size: 0.85rem; color: var(--soft); margin-bottom: 0.75rem; }
 
     .rec-box {
       background: rgba(59,130,246,0.08);
@@ -584,36 +629,13 @@
 
     .rec-box strong { color: var(--accent); }
 
-    /* PROGRESS BARS */
-    .progress-item {
-      margin-bottom: 1rem;
-    }
-
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      margin-bottom: 0.35rem;
-    }
-
+    .progress-item { margin-bottom: 1rem; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.35rem; }
     .progress-label { color: var(--soft); }
     .progress-val { color: var(--white); font-weight: 600; }
+    .progress-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 1s ease; }
 
-    .progress-bar {
-      height: 6px;
-      background: var(--border);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      transition: width 1s ease;
-    }
-
-    /* PDF BUTTON */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -628,27 +650,11 @@
       transition: all 0.2s;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #2563eb);
-      color: white;
-    }
-
+    .btn-primary { background: linear-gradient(135deg, var(--accent), #2563eb); color: white; }
     .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--soft);
-    }
-
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--soft); }
     .btn-outline:hover { border-color: var(--accent); color: var(--white); }
-
-    .btn-row {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-top: 2rem;
-    }
+    .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
 
     /* ── WALKTHROUGH ── */
     #walkthrough { background: var(--bg); }
@@ -660,15 +666,11 @@
       margin-top: 2rem;
     }
 
-    .step {
-      position: relative;
-      margin-bottom: 2.5rem;
-    }
+    .step { position: relative; margin-bottom: 2.5rem; }
 
     .step-dot {
       position: absolute;
-      left: -2.75rem;
-      top: 0.1rem;
+      left: -2.75rem; top: 0.1rem;
       width: 18px; height: 18px;
       border-radius: 50%;
       background: var(--accent);
@@ -676,23 +678,9 @@
       box-shadow: 0 0 0 2px var(--accent);
     }
 
-    .step-number {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.35rem;
-    }
+    .step-number { font-size: 0.7rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.35rem; }
 
-    .step h4 {
-      font-family: 'Syne', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 0.5rem;
-    }
-
+    .step h4 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
     .step p { font-size: 0.88rem; color: var(--soft); }
 
     .screen-thumb {
@@ -744,16 +732,9 @@
       padding-top: 1.5rem;
     }
 
-    .reflection-author {
-      margin-top: 1rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--white);
-    }
-
+    .reflection-author { margin-top: 1rem; font-size: 0.8rem; font-weight: 600; color: var(--white); }
     .reflection-author span { color: var(--muted); font-weight: 400; }
 
-    /* ── FOOTER ── */
     footer {
       background: var(--surface);
       border-top: 1px solid var(--border);
@@ -765,7 +746,6 @@
 
     footer strong { color: var(--soft); }
 
-    /* ── SCROLL TOP ── */
     #scrollTop {
       position: fixed;
       bottom: 2rem; right: 2rem;
@@ -786,7 +766,6 @@
     #scrollTop:hover { border-color: var(--accent); color: var(--white); transform: translateY(-2px); }
     #scrollTop.visible { display: flex; }
 
-    /* CONSENT FORM ACCORDION */
     .accordion {
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -811,43 +790,18 @@
     }
 
     .accordion-header:hover { background: var(--border); }
-
-    .accordion-chevron {
-      transition: transform 0.3s;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
+    .accordion-chevron { transition: transform 0.3s; font-size: 0.8rem; color: var(--muted); }
     .accordion.open .accordion-chevron { transform: rotate(180deg); }
 
-    .accordion-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-      background: var(--bg);
-    }
-
+    .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; background: var(--bg); }
     .accordion.open .accordion-body { max-height: 600px; }
 
-    .accordion-inner {
-      padding: 1.25rem;
-      font-size: 0.85rem;
-      color: var(--soft);
-      line-height: 1.8;
-    }
-
-    .accordion-inner h4 {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.9rem;
-      color: var(--white);
-      margin-bottom: 0.5rem;
-    }
-
+    .accordion-inner { padding: 1.25rem; font-size: 0.85rem; color: var(--soft); line-height: 1.8; }
+    .accordion-inner h4 { font-family: 'Syne', sans-serif; font-size: 0.9rem; color: var(--white); margin-bottom: 0.5rem; }
     .accordion-inner p { margin-bottom: 0.75rem; }
     .accordion-inner ul { padding-left: 1.2rem; }
     .accordion-inner li { margin-bottom: 0.3rem; }
 
-    /* HEURISTIC GRID */
     .heuristic-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -864,86 +818,24 @@
     }
 
     .heuristic-chip:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .heuristic-num { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--border); line-height: 1; margin-bottom: 0.35rem; }
+    .heuristic-name { font-size: 0.78rem; font-weight: 600; color: var(--soft); line-height: 1.4; }
 
-    .heuristic-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--border);
-      line-height: 1;
-      margin-bottom: 0.35rem;
-    }
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    .heuristic-name {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--soft);
-      line-height: 1.4;
-    }
-
-    /* VIDEO PLACEHOLDER */
-    .video-placeholder {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      aspect-ratio: 16/9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      color: var(--muted);
-      margin-top: 1.5rem;
-    }
-
-    .play-btn {
-      width: 64px; height: 64px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .play-btn:hover { transform: scale(1.08); }
-
-    /* SECTION ALTERNATING */
     .alt-bg { background: var(--surface) !important; }
 
-    /* Scrolled nav indicator */
-    .nav-pill {
-      display: none;
-      position: fixed;
-      top: 72px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 99px;
-      padding: 0.3rem 1rem;
-      font-size: 0.72rem;
-      color: var(--muted);
-      z-index: 999;
-    }
-
-    /* Fade-in animation */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
     }
 
     @media (max-width: 640px) {
-      .nav-links { gap: 0; }
-      .nav-links a { padding: 0.3rem 0.45rem; font-size: 0.72rem; }
       .hero h1 { font-size: 2rem; }
       .members-grid { grid-template-columns: repeat(2, 1fr); }
+      .navbar { padding: 0 1rem; }
     }
   </style>
 </head>
@@ -953,6 +845,8 @@
   <nav class="navbar">
     <div class="nav-container">
       <span class="logo">Group <span>1</span> · WonderPets</span>
+
+      <!-- Desktop links -->
       <ul class="nav-links">
         <li><a href="#home">Home</a></li>
         <li><a href="#data">Data Gathering</a></li>
@@ -960,12 +854,34 @@
         <li><a href="#walkthrough">Walkthrough</a></li>
         <li><a href="#reflections">Reflections</a></li>
       </ul>
+
+      <!-- Hamburger button (mobile only) -->
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </nav>
 
-  <!-- ═══════════════════════════════════════
-       HOME PAGE
-  ═══════════════════════════════════════ -->
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-label">Navigation</div>
+    <ul>
+      <li><a href="#home" class="mobile-nav-link"><span class="menu-icon">🏠</span> Home</a></li>
+      <li><a href="#data" class="mobile-nav-link"><span class="menu-icon">📋</span> Data Gathering</a></li>
+      <li><a href="#results" class="mobile-nav-link"><span class="menu-icon">📊</span> Results</a></li>
+      <li><a href="#walkthrough" class="mobile-nav-link"><span class="menu-icon">🖥️</span> Walkthrough</a></li>
+      <li><a href="#reflections" class="mobile-nav-link"><span class="menu-icon">💬</span> Reflections</a></li>
+    </ul>
+    <div class="mobile-menu-divider"></div>
+    <div class="mobile-menu-label">Project Info</div>
+    <ul>
+      <li><a href="#members" class="mobile-nav-link"><span class="menu-icon">👥</span> Group Members</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
   <section id="home" class="hero">
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
@@ -974,7 +890,6 @@
         <span class="badge-dot"></span>
         HCI2 · Partido State University · 2026
       </div>
-     
       <h1>
         Usability Evaluation<br>
         <span class="highlight">Web Reporting Site</span>
@@ -1001,7 +916,7 @@
       <p class="section-desc">Meet the students behind this usability evaluation project.</p>
       <div class="members-grid">
         <div class="member-card">
-          <img src="https://github.com/Violet2709/WonderPets-Report/commit/4643a1e0a76fb8d9cae9ef1f816a4bede88ecb5d" alt="Rica Rose Vipinoso">
+          <img src="1.jpg" alt="Rica Rose Vipinoso">
           <div class="member-name">Rica Rose Vipinoso</div>
           <div class="member-role">Team Leader</div>
         </div>
@@ -1020,23 +935,19 @@
           <div class="member-name">John Kendric Pahuyo</div>
           <div class="member-role">Member</div>
         </div>
-      
       </div>
     </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- ═══════════════════════════════════════
-       DATA GATHERING PAGE
-  ═══════════════════════════════════════ -->
+  <!-- DATA GATHERING -->
   <section id="data" class="section fade-in">
     <div class="container">
       <p class="section-eyebrow">Data Gathering</p>
       <h2 class="section-title">Instruments & Documentation</h2>
       <p class="section-desc">All consent forms, respondent profiles, survey instruments, and evidence gathered during testing.</p>
 
-      <!-- CONSENT FORM -->
       <div class="accordion" id="consentAccordion">
         <button class="accordion-header" onclick="toggleAccordion('consentAccordion')">
           <span>📋 &nbsp;Consent Form</span>
@@ -1061,7 +972,6 @@
         </div>
       </div>
 
-      <!-- RESPONDENT PROFILES -->
       <div class="accordion" id="respondentAccordion">
         <button class="accordion-header" onclick="toggleAccordion('respondentAccordion')">
           <span>👥 &nbsp;Respondent Profiles</span>
@@ -1069,16 +979,12 @@
         </button>
         <div class="accordion-body">
           <div class="accordion-inner">
-            <p>A total of <strong style="color:var(--white)">5 participants</strong> took part in the usability testing sessions. The table below summarizes their profiles.</p>
+            <p>A total of <strong style="color:var(--white)">5 participants</strong> took part in the usability testing sessions.</p>
             <div class="respondent-table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>Age Group</th>
-                    <th>Gender</th>
-                    <th>Tech Proficiency</th>
-                    <th>Prior Experience</th>
+                    <th>#</th><th>Age Group</th><th>Gender</th><th>Tech Proficiency</th><th>Prior Experience</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1094,48 +1000,33 @@
         </div>
       </div>
 
-      <!-- SURVEY INSTRUMENTS -->
       <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin:2rem 0 1rem;font-size:1.1rem;">Survey Instruments</h3>
       <div class="grid-2">
         <div class="card">
           <h3>🔍 Heuristic Evaluation Workbook</h3>
-          <p>Each group member independently evaluated the prototype using Jakob Nielsen's 10 Usability Heuristics. Individual workbooks were completed and aggregated for analysis.</p>
+          <p>Each group member independently evaluated the prototype using Jakob Nielsen's 10 Usability Heuristics.</p>
           <div style="margin-top:1rem;">
             <div class="instrument-item">
               <div class="instrument-icon icon-blue">📄</div>
-              <div>
-                <div class="instrument-label">Vipinoso — HE Workbook</div>
-                <div class="instrument-sub">Completed evaluation · 10 heuristics</div>
-              </div>
+              <div><div class="instrument-label">Vipinoso — HE Workbook</div><div class="instrument-sub">Completed evaluation · 10 heuristics</div></div>
               <a href="he-workbook-Vipinoso.pdf" class="instrument-link" target="_blank">View PDF</a>
             </div>
             <div class="instrument-item">
               <div class="instrument-icon icon-purple">📄</div>
-              <div>
-                <div class="instrument-label">Arayon — HE Workbook</div>
-                <div class="instrument-sub">Completed evaluation · 10 heuristics</div>
-              </div>
+              <div><div class="instrument-label">Arayon — HE Workbook</div><div class="instrument-sub">Completed evaluation · 10 heuristics</div></div>
               <a href="he-workbook-Arayon.pdf" class="instrument-link" target="_blank">View PDF</a>
             </div>
             <div class="instrument-item">
               <div class="instrument-icon icon-cyan">📄</div>
-              <div>
-                <div class="instrument-label">Dela Cruz — HE Workbook</div>
-                <div class="instrument-sub">Completed evaluation · 10 heuristics</div>
-              </div>
+              <div><div class="instrument-label">Dela Cruz — HE Workbook</div><div class="instrument-sub">Completed evaluation · 10 heuristics</div></div>
               <a href="he-workbook-delacruz.pdf" class="instrument-link" target="_blank">View PDF</a>
             </div>
             <div class="instrument-item">
               <div class="instrument-icon icon-green">📄</div>
-              <div>
-                <div class="instrument-label">Pahuyo — HE Workbook</div>
-                <div class="instrument-sub">Completed evaluation · 10 heuristics</div>
-              </div>
+              <div><div class="instrument-label">Pahuyo — HE Workbook</div><div class="instrument-sub">Completed evaluation · 10 heuristics</div></div>
               <a href="he-workbook-pahuyo.pdf" class="instrument-link" target="_blank">View PDF</a>
             </div>
-            <div class="instrument-item">
-              <div class="instrument-icon icon-blue">📄</div>
-         
+          </div>
         </div>
         <div class="card">
           <h3>📊 Usability Testing Survey</h3>
@@ -1143,138 +1034,70 @@
           <div style="margin-top:1rem;">
             <div class="instrument-item">
               <div class="instrument-icon icon-blue">📋</div>
-              <div>
-                <div class="instrument-label">Task Completion Form</div>
-                <div class="instrument-sub">5 tasks · binary success metric</div>
-              </div>
+              <div><div class="instrument-label">Task Completion Form</div><div class="instrument-sub">5 tasks · binary success metric</div></div>
               <a href="task-form.pdf" class="instrument-link" target="_blank">View PDF</a>
             </div>
             <div class="instrument-item">
               <div class="instrument-icon icon-purple">⭐</div>
-              <div>
-                <div class="instrument-label">Satisfaction Questionnaire</div>
-                <div class="instrument-sub">Likert scale · 15 items</div>
-              </div>
+              <div><div class="instrument-label">Satisfaction Questionnaire</div><div class="instrument-sub">Likert scale · 15 items</div></div>
               <a href="satisfaction-survey.pdf" class="instrument-link" target="_blank">View PDF</a>
             </div>
             <div class="instrument-item">
               <div class="instrument-icon icon-cyan">💬</div>
-              <div>
-                <div class="instrument-label">Think-Aloud Observation Sheet</div>
-                <div class="instrument-sub">Qualitative · observer notes</div>
-              </div>
+              <div><div class="instrument-label">Think-Aloud Observation Sheet</div><div class="instrument-sub">Qualitative · observer notes</div></div>
               <a href="thinkaloud-sheet.pdf" class="instrument-link" target="_blank">View PDF</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- TESTING EVIDENCE / GALLERY -->
       <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin:2rem 0 0.5rem;font-size:1.1rem;">Testing Documentation Photos</h3>
       <p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.5rem;">Photos taken during the usability testing sessions.</p>
       <div class="gallery-grid">
-        <div class="gallery-item">
-          <img src="testing-photo1.jpg" alt="Testing Session 1" onerror="this.style.display='none';this.parentElement.innerHTML='📸 Testing Session 1'">
-        </div>
-        <div class="gallery-item">
-          <img src="testing-photo2.jpg" alt="Testing Session 2" onerror="this.style.display='none';this.parentElement.innerHTML='📸 Testing Session 2'">
-        </div>
-        <div class="gallery-item">
-          <img src="testing-photo3.jpg" alt="Testing Session 3" onerror="this.style.display='none';this.parentElement.innerHTML='📸 Testing Session 3'">
-        </div>
-        <div class="gallery-item">
-          <img src="testing-photo4.jpg" alt="Testing Session 4" onerror="this.style.display='none';this.parentElement.innerHTML='📸 Testing Session 4'">
-        </div>
+        <div class="gallery-item"><img src="testing-photo1.jpg" alt="Testing Session 1" onerror="this.style.display='none';this.parentElement.innerHTML='📸 Testing Session 1'"></div>
+        <div class="gallery-item"><img src="testing-photo2.jpg" alt="Testing Session 2" onerror="this.style.display='none';this.parentElement.innerHTML='📸 Testing Session 2'"></div>
+        <div class="gallery-item"><img src="testing-photo3.jpg" alt="Testing Session 3" onerror="this.style.display='none';this.parentElement.innerHTML='📸 Testing Session 3'"></div>
+        <div class="gallery-item"><img src="testing-photo4.jpg" alt="Testing Session 4" onerror="this.style.display='none';this.parentElement.innerHTML='📸 Testing Session 4'"></div>
       </div>
     </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- ═══════════════════════════════════════
-       RESULTS, DISCUSSION & RECOMMENDATIONS
-  ═══════════════════════════════════════ -->
+  <!-- RESULTS -->
   <section id="results" class="section alt-bg fade-in">
     <div class="container">
       <p class="section-eyebrow">Results & Analysis</p>
       <h2 class="section-title">Findings, Discussion & Recommendations</h2>
       <p class="section-desc">Summary of usability testing outcomes, heuristic issues identified, and design improvement recommendations.</p>
 
-      <!-- STATS -->
       <div class="stat-row">
-        <div class="stat-box">
-          <div class="stat-number">0</div>
-          <div class="stat-label">Participants</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">0</div>
-          <div class="stat-label">Tasks Tested</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">78%</div>
-          <div class="stat-label">Avg Task Success</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">3.8</div>
-          <div class="stat-label">Avg Satisfaction /5</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">9</div>
-          <div class="stat-label">Issues Found</div>
-        </div>
+        <div class="stat-box"><div class="stat-number">0</div><div class="stat-label">Participants</div></div>
+        <div class="stat-box"><div class="stat-number">0</div><div class="stat-label">Tasks Tested</div></div>
+        <div class="stat-box"><div class="stat-number">78%</div><div class="stat-label">Avg Task Success</div></div>
+        <div class="stat-box"><div class="stat-number">3.8</div><div class="stat-label">Avg Satisfaction /5</div></div>
+        <div class="stat-box"><div class="stat-number">9</div><div class="stat-label">Issues Found</div></div>
       </div>
 
-      <!-- TASK SUCCESS RATES -->
       <div class="grid-2" style="margin-bottom:2rem;">
         <div class="card">
           <h3>Task Completion Rates</h3>
-          <div class="progress-item">
-            <div class="progress-meta"><span class="progress-label">Task 1 — [Describe task]</span><span class="progress-val">100%</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-meta"><span class="progress-label">Task 2 — [Describe task]</span><span class="progress-val">80%</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-meta"><span class="progress-label">Task 3 — [Describe task]</span><span class="progress-val">60%</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-meta"><span class="progress-label">Task 4 — [Describe task]</span><span class="progress-val">80%</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-meta"><span class="progress-label">Task 5 — [Describe task]</span><span class="progress-val">70%</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
-          </div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Task 1 — [Describe task]</span><span class="progress-val">100%</span></div><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Task 2 — [Describe task]</span><span class="progress-val">80%</span></div><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Task 3 — [Describe task]</span><span class="progress-val">60%</span></div><div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Task 4 — [Describe task]</span><span class="progress-val">80%</span></div><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Task 5 — [Describe task]</span><span class="progress-val">70%</span></div><div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div></div>
         </div>
         <div class="card">
           <h3>Satisfaction Scores (avg per dimension)</h3>
-          <div class="progress-item">
-            <div class="progress-meta"><span class="progress-label">Ease of Use</span><span class="progress-val">4.0/5</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-meta"><span class="progress-label">Visual Design</span><span class="progress-val">3.6/5</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-meta"><span class="progress-label">Navigation Clarity</span><span class="progress-val">3.4/5</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:68%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-meta"><span class="progress-label">Error Recovery</span><span class="progress-val">3.2/5</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:64%"></div></div>
-          </div>
-          <div class="progress-item">
-            <div class="progress-meta"><span class="progress-label">Overall Satisfaction</span><span class="progress-val">3.8/5</span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:76%"></div></div>
-          </div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Ease of Use</span><span class="progress-val">4.0/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Visual Design</span><span class="progress-val">3.6/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Navigation Clarity</span><span class="progress-val">3.4/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:68%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Error Recovery</span><span class="progress-val">3.2/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:64%"></div></div></div>
+          <div class="progress-item"><div class="progress-meta"><span class="progress-label">Overall Satisfaction</span><span class="progress-val">3.8/5</span></div><div class="progress-bar"><div class="progress-fill" style="width:76%"></div></div></div>
         </div>
       </div>
 
-      <!-- HEURISTIC FINDINGS (COLLAPSIBLE) -->
       <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:1rem;font-size:1.1rem;">Key Usability Issues Identified</h3>
 
       <div class="finding-card">
@@ -1285,11 +1108,9 @@
           <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
         </div>
         <div class="finding-body">
-          <p><strong style="color:var(--white)">Description:</strong> Replace this with a specific description of the usability issue observed. Mention which tasks triggered the issue and how participants responded.</p>
-          <p><strong style="color:var(--white)">Heuristic Violated:</strong> Nielsen Heuristic #9 — Help users recognize, diagnose, and recover from errors. Error messages should be expressed in plain language and suggest a solution.</p>
-          <div class="rec-box">
-            <strong>Recommendation:</strong> Replace this with a concrete design recommendation to fix the issue, referencing Nielsen's heuristic guidance.
-          </div>
+          <p><strong style="color:var(--white)">Description:</strong> Replace this with a specific description of the usability issue observed.</p>
+          <p><strong style="color:var(--white)">Heuristic Violated:</strong> Nielsen Heuristic #9 — Help users recognize, diagnose, and recover from errors.</p>
+          <div class="rec-box"><strong>Recommendation:</strong> Replace this with a concrete design recommendation to fix the issue.</div>
         </div>
       </div>
 
@@ -1301,11 +1122,9 @@
           <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
         </div>
         <div class="finding-body">
-          <p><strong style="color:var(--white)">Description:</strong> Describe the navigation issue here. Note which participants were confused and what errors or delays it caused.</p>
-          <p><strong style="color:var(--white)">Heuristic Violated:</strong> Nielsen Heuristic #6 — Recognition rather than recall. Minimize the user's memory load; make objects, actions, and options visible.</p>
-          <div class="rec-box">
-            <strong>Recommendation:</strong> Replace with specific UI/UX recommendation — e.g., relabel navigation items, add icons, use breadcrumbs.
-          </div>
+          <p><strong style="color:var(--white)">Description:</strong> Describe the navigation issue here.</p>
+          <p><strong style="color:var(--white)">Heuristic Violated:</strong> Nielsen Heuristic #6 — Recognition rather than recall.</p>
+          <div class="rec-box"><strong>Recommendation:</strong> Relabel navigation items, add icons, use breadcrumbs.</div>
         </div>
       </div>
 
@@ -1317,11 +1136,9 @@
           <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
         </div>
         <div class="finding-body">
-          <p><strong style="color:var(--white)">Description:</strong> Describe the feedback issue here. Explain which user actions lacked visual/auditory confirmation and what user behavior resulted.</p>
-          <p><strong style="color:var(--white)">Heuristic Violated:</strong> Nielsen Heuristic #1 — Visibility of system status. The system should keep users informed about what is going on through appropriate feedback.</p>
-          <div class="rec-box">
-            <strong>Recommendation:</strong> Add toast notifications, loading indicators, or success/error banners to give users immediate feedback after every action.
-          </div>
+          <p><strong style="color:var(--white)">Description:</strong> Describe the feedback issue here.</p>
+          <p><strong style="color:var(--white)">Heuristic Violated:</strong> Nielsen Heuristic #1 — Visibility of system status.</p>
+          <div class="rec-box"><strong>Recommendation:</strong> Add toast notifications, loading indicators, or success/error banners.</div>
         </div>
       </div>
 
@@ -1333,11 +1150,9 @@
           <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
         </div>
         <div class="finding-body">
-          <p><strong style="color:var(--white)">Description:</strong> Describe the inconsistency issue here. Which screens had different button styles and how did that confuse participants?</p>
-          <p><strong style="color:var(--white)">Heuristic Violated:</strong> Nielsen Heuristic #4 — Consistency and standards. Users should not have to wonder whether different words, situations, or actions mean the same thing.</p>
-          <div class="rec-box">
-            <strong>Recommendation:</strong> Establish and enforce a design system or style guide for all interactive components across the prototype.
-          </div>
+          <p><strong style="color:var(--white)">Description:</strong> Describe the inconsistency issue here.</p>
+          <p><strong style="color:var(--white)">Heuristic Violated:</strong> Nielsen Heuristic #4 — Consistency and standards.</p>
+          <div class="rec-box"><strong>Recommendation:</strong> Establish a design system for all interactive components.</div>
         </div>
       </div>
 
@@ -1349,31 +1164,18 @@
           <span style="color:var(--muted);font-size:0.8rem;margin-left:0.5rem;">▼</span>
         </div>
         <div class="finding-body">
-          <p><strong style="color:var(--white)">Description:</strong> Describe the tap-target or aesthetic issue here. Minor but noted by multiple participants.</p>
-          <p><strong style="color:var(--white)">Heuristic Violated:</strong> Nielsen Heuristic #8 — Aesthetic and minimalist design. Irrelevant information and poor spatial layout compete with relevant information and reduce relative visibility.</p>
-          <div class="rec-box">
-            <strong>Recommendation:</strong> Increase minimum touch target sizes to at least 44×44px and increase spacing between interactive elements.
-          </div>
+          <p><strong style="color:var(--white)">Description:</strong> Describe the tap-target or aesthetic issue here.</p>
+          <p><strong style="color:var(--white)">Heuristic Violated:</strong> Nielsen Heuristic #8 — Aesthetic and minimalist design.</p>
+          <div class="rec-box"><strong>Recommendation:</strong> Increase minimum touch target sizes to at least 44×44px.</div>
         </div>
       </div>
 
-      <!-- DISCUSSION -->
       <div class="card" style="margin-top:2rem;">
         <h3>Discussion of Findings</h3>
-        <p>
-          Replace this paragraph with your group's discussion. Explain the overall pattern of usability issues, 
-          connect them to the heuristics evaluated, and reflect on how they affected users during testing.
-          Discuss which issues were most critical and how they impacted the overall user experience. 
-          Reference your task completion rates and satisfaction scores to support your analysis.
-        </p>
-        <p style="margin-top:0.75rem;">
-          Discuss any surprising findings — issues that were not anticipated during design but emerged during 
-          actual user testing. Explain any discrepancies between the heuristic evaluation results (expert-driven) 
-          and the usability testing results (user-driven).
-        </p>
+        <p>Replace this paragraph with your group's discussion. Explain the overall pattern of usability issues, connect them to the heuristics evaluated, and reflect on how they affected users during testing.</p>
+        <p style="margin-top:0.75rem;">Discuss any surprising findings — issues that were not anticipated during design but emerged during actual user testing.</p>
       </div>
 
-      <!-- HEURISTIC REFERENCE -->
       <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin:2rem 0 0.5rem;font-size:1.1rem;">Nielsen's 10 Usability Heuristics — Reference</h3>
       <div class="heuristic-grid">
         <div class="heuristic-chip"><div class="heuristic-num">01</div><div class="heuristic-name">Visibility of System Status</div></div>
@@ -1388,23 +1190,16 @@
         <div class="heuristic-chip"><div class="heuristic-num">10</div><div class="heuristic-name">Help and Documentation</div></div>
       </div>
 
-      <!-- PDF DOWNLOAD -->
       <div class="btn-row">
-        <a href="Heuristic-Evaluation-Workbook.pdf" class="btn btn-primary" target="_blank">
-          📄 View Full Heuristic Evaluation Workbook (PDF)
-        </a>
-        <a href="#data" class="btn btn-outline">
-          ← Back to Data Gathering
-        </a>
+        <a href="Heuristic-Evaluation-Workbook.pdf" class="btn btn-primary" target="_blank">📄 View Full Heuristic Evaluation Workbook (PDF)</a>
+        <a href="#data" class="btn btn-outline">← Back to Data Gathering</a>
       </div>
     </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- ═══════════════════════════════════════
-       PROTOTYPE WALKTHROUGH (Optional)
-  ═══════════════════════════════════════ -->
+  <!-- WALKTHROUGH -->
   <section id="walkthrough" class="section fade-in">
     <div class="container">
       <p class="section-eyebrow">Optional · Prototype Walkthrough</p>
@@ -1417,92 +1212,51 @@
             <div class="step-dot"></div>
             <div class="step-number">Screen 01</div>
             <h4>[Screen Name — e.g., Login / Landing Page]</h4>
-            <p>Describe what the user sees on this screen, its purpose, and any notable UI elements. Replace this with your actual prototype description.</p>
-            <div class="screen-thumb">
-              <img src="screen1.png" alt="Screen 1" onerror="this.style.display='none';this.parentElement.style.display='flex';this.parentElement.innerHTML='🖼 Screenshot: Login Screen'">
-            </div>
+            <p>Describe what the user sees on this screen, its purpose, and any notable UI elements.</p>
+            <div class="screen-thumb"><img src="screen1.png" alt="Screen 1" onerror="this.style.display='none';this.parentElement.style.display='flex';this.parentElement.innerHTML='🖼 Screenshot: Login Screen'"></div>
           </div>
-
           <div class="step">
             <div class="step-dot"></div>
             <div class="step-number">Screen 02</div>
             <h4>[Screen Name — e.g., Dashboard]</h4>
-            <p>Describe the dashboard or main screen. Note what key actions are available here and how users navigated during testing.</p>
-            <div class="screen-thumb">
-              <img src="screen2.png" alt="Screen 2" onerror="this.style.display='none';this.parentElement.style.display='flex';this.parentElement.innerHTML='🖼 Screenshot: Dashboard'">
-            </div>
+            <p>Describe the dashboard or main screen. Note what key actions are available.</p>
+            <div class="screen-thumb"><img src="screen2.png" alt="Screen 2" onerror="this.style.display='none';this.parentElement.style.display='flex';this.parentElement.innerHTML='🖼 Screenshot: Dashboard'"></div>
           </div>
-
           <div class="step">
             <div class="step-dot"></div>
             <div class="step-number">Screen 03</div>
             <h4>[Screen Name — e.g., Form / Input Screen]</h4>
-            <p>Describe the form or data-entry screen. This screen was most often the source of usability issues during testing.</p>
-            <div class="screen-thumb">
-              <img src="screen3.png" alt="Screen 3" onerror="this.style.display='none';this.parentElement.style.display='flex';this.parentElement.innerHTML='🖼 Screenshot: Form Screen'">
-            </div>
+            <p>Describe the form or data-entry screen. Most often the source of usability issues.</p>
+            <div class="screen-thumb"><img src="screen3.png" alt="Screen 3" onerror="this.style.display='none';this.parentElement.style.display='flex';this.parentElement.innerHTML='🖼 Screenshot: Form Screen'"></div>
           </div>
-
           <div class="step">
             <div class="step-dot" style="background:var(--good);box-shadow:0 0 0 2px var(--good);"></div>
             <div class="step-number" style="color:var(--good)">Screen 04</div>
             <h4>[Screen Name — e.g., Confirmation / Success Screen]</h4>
-            <p>Describe the final screen in the user flow. Was feedback clear enough? This was flagged during heuristic evaluation.</p>
-            <div class="screen-thumb">
-              <img src="screen4.png" alt="Screen 4" onerror="this.style.display='none';this.parentElement.style.display='flex';this.parentElement.innerHTML='🖼 Screenshot: Confirmation Screen'">
-            </div>
+            <p>Describe the final screen in the user flow.</p>
+            <div class="screen-thumb"><img src="screen4.png" alt="Screen 4" onerror="this.style.display='none';this.parentElement.style.display='flex';this.parentElement.innerHTML='🖼 Screenshot: Confirmation Screen'"></div>
           </div>
         </div>
 
-        <!-- VIDEO DEMO SECTION -->
-       <div>
-  <div class="card" style="margin-bottom:1.25rem;">
-    <h3>🎬 Video Demonstration</h3>
-
-    <p>
-      A screen recording demonstration of the prototype's complete user flow,
-      narrated by the group.
-    </p>
-
-    <video width="100%" controls>
-      <source src="demo.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-
-    <p style="font-size:0.8rem;">
-      Click to play demonstration video
-    </p>
-
-    <p style="font-size:0.72rem;color:var(--border)">
-      Replace with &lt;iframe&gt; or &lt;video&gt; tag
-    </p>
-  </div>
-</div>
+        <div>
+          <div class="card" style="margin-bottom:1.25rem;">
+            <h3>🎬 Video Demonstration</h3>
+            <p>A screen recording demonstration of the prototype's complete user flow, narrated by the group.</p>
+            <video width="100%" controls style="margin-top:0.75rem;border-radius:8px;">
+              <source src="demo.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
 
           <div class="card">
             <h3>🗺️ User Flow Summary</h3>
             <p>The prototype supports the following primary user flow tested during the evaluation sessions:</p>
             <div style="margin-top:1rem;">
-              <div class="instrument-item">
-                <div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">1</div>
-                <div><div class="instrument-label">User opens the system</div></div>
-              </div>
-              <div class="instrument-item">
-                <div class="instrument-icon icon-purple" style="font-size:0.8rem;font-weight:700;color:#c4b5fd;">2</div>
-                <div><div class="instrument-label">[Describe step 2]</div></div>
-              </div>
-              <div class="instrument-item">
-                <div class="instrument-icon icon-cyan" style="font-size:0.8rem;font-weight:700;color:#67e8f9;">3</div>
-                <div><div class="instrument-label">[Describe step 3]</div></div>
-              </div>
-              <div class="instrument-item">
-                <div class="instrument-icon icon-green" style="font-size:0.8rem;font-weight:700;color:#6ee7b7;">4</div>
-                <div><div class="instrument-label">[Describe step 4]</div></div>
-              </div>
-              <div class="instrument-item">
-                <div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">5</div>
-                <div><div class="instrument-label">Task complete / System confirms</div></div>
-              </div>
+              <div class="instrument-item"><div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">1</div><div><div class="instrument-label">User opens the system</div></div></div>
+              <div class="instrument-item"><div class="instrument-icon icon-purple" style="font-size:0.8rem;font-weight:700;color:#c4b5fd;">2</div><div><div class="instrument-label">[Describe step 2]</div></div></div>
+              <div class="instrument-item"><div class="instrument-icon icon-cyan" style="font-size:0.8rem;font-weight:700;color:#67e8f9;">3</div><div><div class="instrument-label">[Describe step 3]</div></div></div>
+              <div class="instrument-item"><div class="instrument-icon icon-green" style="font-size:0.8rem;font-weight:700;color:#6ee7b7;">4</div><div><div class="instrument-label">[Describe step 4]</div></div></div>
+              <div class="instrument-item"><div class="instrument-icon icon-blue" style="font-size:0.8rem;font-weight:700;color:#93c5fd;">5</div><div><div class="instrument-label">Task complete / System confirms</div></div></div>
             </div>
           </div>
         </div>
@@ -1512,9 +1266,7 @@
 
   <div class="divider"></div>
 
-  <!-- ═══════════════════════════════════════
-       REFLECTIONS (Optional)
-  ═══════════════════════════════════════ -->
+  <!-- REFLECTIONS -->
   <section id="reflections" class="section alt-bg fade-in">
     <div class="container">
       <p class="section-eyebrow">Optional · Reflections</p>
@@ -1523,54 +1275,28 @@
 
       <div class="grid-2">
         <div class="reflection-card">
-          <div class="reflection-text">
-            Replace this with your personal reflection on the project. What did you learn from conducting the heuristic evaluation? What was challenging? How has this process changed how you think about user interface design?
-          </div>
-          <div class="reflection-author">
-            Rica Rose Vipinoso  <span>· Team Leader</span>
-          </div>
+          <div class="reflection-text">Replace this with your personal reflection on the project. What did you learn from conducting the heuristic evaluation? What was challenging?</div>
+          <div class="reflection-author">Rica Rose Vipinoso <span>· Team Leader</span></div>
         </div>
         <div class="reflection-card">
-          <div class="reflection-text">
-            Replace this with your personal reflection. Focus on the usability testing experience — what surprised you about how real users interacted with the prototype? What would you design differently?
-          </div>
-          <div class="reflection-author">
-            Jerome Arayon<span>· Member</span>
-          </div>
+          <div class="reflection-text">Replace this with your personal reflection. Focus on the usability testing experience — what surprised you about how real users interacted with the prototype?</div>
+          <div class="reflection-author">Jerome Arayon <span>· Member</span></div>
         </div>
         <div class="reflection-card">
-          <div class="reflection-text">
-            Share your reflection on building the reporting site itself — how did structuring the information help you understand the evaluation findings more deeply? What technical challenges did you face?
-          </div>
-          <div class="reflection-author">
-            Ellen Dela Cruz <span>· Member</span>
-          </div>
+          <div class="reflection-text">Share your reflection on building the reporting site itself — how did structuring the information help you understand the evaluation findings more deeply?</div>
+          <div class="reflection-author">Ellen Dela Cruz <span>· Member</span></div>
         </div>
         <div class="reflection-card">
-          <div class="reflection-text">
-            Reflect on the data analysis phase. How did you interpret the qualitative and quantitative findings? What patterns did you notice across the different evaluation methods?
-          </div>
-          <div class="reflection-author">
-            John Kendric Pahuyo<span>· Member</span>
-          </div>
+          <div class="reflection-text">Reflect on the data analysis phase. How did you interpret the qualitative and quantitative findings? What patterns did you notice?</div>
+          <div class="reflection-author">John Kendric Pahuyo <span>· Member</span></div>
         </div>
       </div>
 
-      <!-- Additional Findings -->
       <h3 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin:3rem 0 1rem;font-size:1.1rem;">Additional Findings</h3>
       <div class="grid-3">
-        <div class="card">
-          <h3>💡 Positive Feedback</h3>
-          <p>Describe any positive aspects noted by participants during usability testing — features they appreciated, interactions they found intuitive, or design elements that worked well.</p>
-        </div>
-        <div class="card">
-          <h3>🔄 Unexpected Patterns</h3>
-          <p>Describe any surprising behavior or feedback that emerged during testing — patterns you did not anticipate during the heuristic evaluation or prototype design phase.</p>
-        </div>
-        <div class="card">
-          <h3>🚀 Future Improvements</h3>
-          <p>Beyond the immediate recommendations, describe longer-term design improvements or features that would significantly improve the prototype's usability in a future iteration.</p>
-        </div>
+        <div class="card"><h3>💡 Positive Feedback</h3><p>Describe any positive aspects noted by participants during usability testing.</p></div>
+        <div class="card"><h3>🔄 Unexpected Patterns</h3><p>Describe any surprising behavior or feedback that emerged during testing.</p></div>
+        <div class="card"><h3>🚀 Future Improvements</h3><p>Describe longer-term design improvements for a future iteration.</p></div>
       </div>
 
       <div class="btn-row">
@@ -1580,17 +1306,15 @@
     </div>
   </section>
 
-  <!-- SCROLL TO TOP -->
   <button id="scrollTop" title="Go to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-  <!-- FOOTER -->
   <footer>
     <p><strong>Partido State University</strong> · College of Engineering and Computational Sciences · Computational Sciences Department</p>
     <p style="margin-top:0.35rem;">HCI2 – Human-Computer Interaction · Final Project: Web Reporting Site · Group 1</p>
   </footer>
 
   <script>
-    // Scroll-to-top visibility
+    // Scroll-to-top
     const scrollBtn = document.getElementById('scrollTop');
     window.addEventListener('scroll', () => {
       scrollBtn.classList.toggle('visible', window.scrollY > 400);
@@ -1598,8 +1322,7 @@
 
     // Accordion toggle
     function toggleAccordion(id) {
-      const el = document.getElementById(id);
-      el.classList.toggle('open');
+      document.getElementById(id).classList.toggle('open');
     }
 
     // Finding expand/collapse
@@ -1613,29 +1336,66 @@
     // Fade-in on scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
       });
     }, { threshold: 0.08 });
-
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Active nav link on scroll
+    // Active nav highlight on scroll
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-links a');
     window.addEventListener('scroll', () => {
       let current = '';
-      sections.forEach(sec => {
-        if (window.scrollY >= sec.offsetTop - 100) current = sec.getAttribute('id');
-      });
+      sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 100) current = sec.getAttribute('id'); });
       navLinks.forEach(a => {
         a.style.color = a.getAttribute('href') === '#' + current ? 'var(--white)' : '';
         a.style.background = a.getAttribute('href') === '#' + current ? 'var(--surface2)' : '';
       });
     });
+
+    // ── HAMBURGER MENU ──
+    const hamburger = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.contains('open');
+      hamburger.classList.toggle('open', !isOpen);
+      hamburger.setAttribute('aria-expanded', !isOpen);
+      mobileMenu.setAttribute('aria-hidden', isOpen);
+      if (!isOpen) {
+        mobileMenu.style.display = 'block';
+        requestAnimationFrame(() => mobileMenu.classList.add('open'));
+      } else {
+        mobileMenu.classList.remove('open');
+        setTimeout(() => { mobileMenu.style.display = 'none'; }, 300);
+      }
+    });
+
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.classList.remove('open');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        setTimeout(() => { mobileMenu.style.display = 'none'; }, 300);
+      });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+        if (mobileMenu.classList.contains('open')) {
+          hamburger.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+          mobileMenu.classList.remove('open');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+          setTimeout(() => { mobileMenu.style.display = 'none'; }, 300);
+        }
+      }
+    });
   </script>
 </body>
 </html>
-Displaying index.html.
+
+
